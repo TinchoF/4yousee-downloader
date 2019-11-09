@@ -36,7 +36,7 @@ function createWindow () {
       event.preventDefault();
       mainWindow.hide();
   });
-
+  mainWindow.removeMenu()
   mainWindow.on('close', function (event) {
       if(!app.isQuiting){
           event.preventDefault();
@@ -58,6 +58,7 @@ function createWindow () {
   appIcon = new Tray('outcon.ico');
   appIcon.setToolTip('Outcon');
   appIcon.setContextMenu(contextMenu);
+  mainWindow.minimize()
 }
 ///////////////////////////////////////////////////////////
 app.disableHardwareAcceleration();

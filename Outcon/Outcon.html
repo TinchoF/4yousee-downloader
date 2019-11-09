@@ -26,38 +26,24 @@
 		}
 		async function show(){
 			let player = await fetch("http://localhost:48567/api/player/status");
-			console.log(player)
 			let id;
-			if (player)  id = JSON.parse(player).player.id
-			else id=14;
+			if (player) id = JSON.parse(player).player.id;
+			else id = 0;
 			//let content = JSON.parse(await fetch("http://test.outcondigital.com:8048/ad/get?player="+id+"&publisher=5d794f57306ea430587143d2&demo=true"));//Publisher Otima
 			let content = JSON.parse(await fetch("http://test.outcondigital.com:8048/ad/get?player="+id+"&publisher=5d5d66f2306ea4114a37c7c2&demo=true"));//Publisher Outcon test
-			if (content.status == 'error') {
+			if (content.status == 'error' || id == 0) {
 				document.getElementById("divShow").innerHTML = '<img style="margin: 0; padding: 0; width: 100%; height: 100%; margin: 0px; padding: 0px"; src="../outcon/downloads/default.jpeg">';
-				setTimeout(function(){
-					fetch(content.trackingURL);
-					fetch("http://localhost:48567/api/player/next");
-				}, content.duration*1000 );
 			}
-			
-			let f = decodeURIComponent(content.creatives[0].url).split('/');
-			let filename = f[f.length-1]
-			if (content.type == "video"){
-				function finish(e) {
-					fetch(content.trackingURL);
-					fetch("http://localhost:48567/api/player/next");
+			else {
+				let f = decodeURIComponent(content.creatives[0].url).split('/');
+				let filename = f[f.length-1]
+				if (content.type == "video"){
+					document.getElementById("divShow").innerHTML = '<video muted autoplay id="video"; style="margin: 0; padding: 0; width: 100%; height: 100%; margin: 0px; padding: 0px" ><source src="../outcon/downloads/'+filename+'"></video>';
 				}
-				document.getElementById("divShow").innerHTML = '<video muted id="video"; style="margin: 0; padding: 0; width: 100%; height: 100%; margin: 0px; padding: 0px" ><source src="../outcon/downloads/'+filename+'"></video>';
-				let video = document.getElementById("video");
-				 video.play();
-				 video.onended = function() {finish()};
-			}
-			if (content.type == "banner"){
-				document.getElementById("divShow").innerHTML = '<img style="margin: 0; padding: 0; width: 100%; height: 100%; margin: 0px; padding: 0px"; src="../outcon/downloads/'+filename+'">';
-				setTimeout(function(){
-					fetch(content.trackingURL);
-					fetch("http://localhost:48567/api/player/next");
-				}, content.duration*1000 );
+				if (content.type == "banner"){
+					document.getElementById("divShow").innerHTML = '<img style="margin: 0; padding: 0; width: 100%; height: 100%; margin: 0px; padding: 0px"; src="../outcon/downloads/'+filename+'">';
+				}
+				fetch(content.trackingURL);
 			}
 		}
 		show();
