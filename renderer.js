@@ -9,7 +9,7 @@ async function downloadAd(ad){
 	console.log(ad)
 	let f = decodeURIComponent(ad.creatives[0].url).split('/')
 	let ops = {
-		directory: "downloads/",
+		directory: path+"/downloads/",
 		filename: f[f.length-1]
 	}
 	const createFile = function(){

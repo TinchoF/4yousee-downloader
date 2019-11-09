@@ -24,8 +24,8 @@ let mainWindow
 function createWindow () {
   mainWindow = new BrowserWindow({
     icon: path.join(__dirname, 'icons/png/64x64.png'),
-    width: 800,
-    height: 600,
+    width: 200,
+    height: 100,
     resizable: false,
     webPreferences: {
       nodeIntegration: true
@@ -55,7 +55,7 @@ function createWindow () {
         app.quit();
     } }
   ]);
-  appIcon = new Tray('outcon.ico');
+  appIcon = new Tray('icons/png/64x64.png');
   appIcon.setToolTip('Outcon');
   appIcon.setContextMenu(contextMenu);
 }

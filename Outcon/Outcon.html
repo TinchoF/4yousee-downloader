@@ -8,8 +8,6 @@
 		<div id='divShow'></div>
 	</body>
 	<script>
-//"../downloads/ OTIMA_CABORE19_FINAL[5].jpeg" --> buscar archivos ahi sacando el nombre de las ads
-
 		function fetch(url){
 			return new Promise((resolve, reject) => {
 				let xmlhttp = new XMLHttpRequest();
@@ -34,23 +32,30 @@
 			else id=14;
 			//let content = JSON.parse(await fetch("http://test.outcondigital.com:8048/ad/get?player="+id+"&publisher=5d794f57306ea430587143d2&demo=true"));//Publisher Otima
 			let content = JSON.parse(await fetch("http://test.outcondigital.com:8048/ad/get?player="+id+"&publisher=5d5d66f2306ea4114a37c7c2&demo=true"));//Publisher Outcon test
-			if (content.status == 'error') fetch("http://localhost:48567/api/player/next");
+			if (content.status == 'error') {
+				document.getElementById("divShow").innerHTML = '<img style="margin: 0; padding: 0; width: 100%; height: 100%; margin: 0px; padding: 0px"; src="../outcon/downloads/default.jpeg">';
+				setTimeout(function(){
+					fetch(content.trackingURL);
+					fetch("http://localhost:48567/api/player/next");
+				}, content.duration*1000 );
+			}
+			
 			let f = decodeURIComponent(content.creatives[0].url).split('/');
 			let filename = f[f.length-1]
 			if (content.type == "video"){
-				async function finish(e) {
-					console.log(await fetch(content.trackingURL));
+				function finish(e) {
+					fetch(content.trackingURL);
 					fetch("http://localhost:48567/api/player/next");
 				}
-				document.getElementById("divShow").innerHTML = '<video muted id="video"; style="margin: 0; padding: 0; width: 100%; height: 100%; margin: 0px; padding: 0px" ><source src="../downloads/'+filename+'"></video>';
+				document.getElementById("divShow").innerHTML = '<video muted id="video"; style="margin: 0; padding: 0; width: 100%; height: 100%; margin: 0px; padding: 0px" ><source src="../outcon/downloads/'+filename+'"></video>';
 				let video = document.getElementById("video");
 				 video.play();
 				 video.onended = function() {finish()};
 			}
 			if (content.type == "banner"){
-				document.getElementById("divShow").innerHTML = '<img style="margin: 0; padding: 0; width: 100%; height: 100%; margin: 0px; padding: 0px"; src="../downloads/'+filename+'">';
-				setTimeout(async function(){
-					console.log(await fetch(content.trackingURL));
+				document.getElementById("divShow").innerHTML = '<img style="margin: 0; padding: 0; width: 100%; height: 100%; margin: 0px; padding: 0px"; src="../outcon/downloads/'+filename+'">';
+				setTimeout(function(){
+					fetch(content.trackingURL);
 					fetch("http://localhost:48567/api/player/next");
 				}, content.duration*1000 );
 			}
@@ -58,5 +63,4 @@
 		show();
 	</script>
 </html>
-
 
