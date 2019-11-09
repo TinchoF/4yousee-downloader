@@ -38,4 +38,6 @@ async function downloadContent(){
 		}
 	}
 }
-downloadContent()
+setInterval(function(){
+	downloadContent()
+}, 3600000 );

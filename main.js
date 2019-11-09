@@ -55,7 +55,7 @@ function createWindow () {
         app.quit();
     } }
   ]);
-  appIcon = new Tray('icons/png/64x64.png');
+  appIcon = new Tray('outcon.ico');
   appIcon.setToolTip('Outcon');
   appIcon.setContextMenu(contextMenu);
 }
