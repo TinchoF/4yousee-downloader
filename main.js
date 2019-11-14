@@ -26,7 +26,7 @@ function createWindow () {
     icon: path.join(__dirname, 'icons/png/64x64.png'),
     width: 200,
     height: 100,
-    resizable: false,
+    resizable: true,
     webPreferences: {
       nodeIntegration: true
     }
@@ -59,7 +59,8 @@ function createWindow () {
   appIcon.setToolTip('Outcon');
   appIcon.setContextMenu(contextMenu);
   mainWindow.minimize()
-}
+
 ///////////////////////////////////////////////////////////
+}
 app.disableHardwareAcceleration();
 app.on('ready', createWindow);

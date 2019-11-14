@@ -21,7 +21,9 @@
     "start": "electron .",
     "package-win32": "electron-packager . outcon-app --overwrite --platform=win32 --icon=outcon.ico --asar --arch=ia32 --app-version=1.0.0 --prune=true --out=dist",
     "package-win": "electron-packager . outcon-app --overwrite --platform=win32 --icon=outcon.ico --asar --arch=x64 --app-version=1.0.0 --prune=true --out=dist",
-    "package-linux": "electron-packager . outcon-app --overwrite --platform=linux --arch=x64 --icon=icons/png/128x128.png --prune=true --out=dist"
+    "package-linux": "electron-packager . outcon-app --overwrite --platform=linux --arch=x64 --icon=icons/png/128x128.png --prune=true --out=dist",
+    "package-linux32": "electron-packager . outcon-app --overwrite --platform=linux --arch=ia32 --icon=icons/png/128x128.png --prune=true --out=dist"
+
   },
   "dependencies": {
     "auto-launch": "^5.0.5",

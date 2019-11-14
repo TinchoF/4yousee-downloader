@@ -2,7 +2,8 @@ const remote = require('electron').remote;
 const app = remote.app;
 const appPath = app.getAppPath();
 const fs = require('fs');
-let path = appPath.replace("resources\\app.asar", '')
+let path = appPath.replace("resources\\app.asar", '') //Windows
+//let path = appPath.replace("resources/app", '') //linux
 console.log(path)
 let download = require('download-file');
 
@@ -42,7 +43,9 @@ async function clean(adsFiles){
 
 async function downloadContent(){
 	let adsFiles = []
-	let camp = JSON.parse(await fetch("http://test.outcondigital.com:8048/campaigns/available?demo=true")
+	let camp = JSON.parse(await fetch("http://test.outcondigital.com:8048/campaigns/available?publisher=5d794f57306ea430587143d2")//Publisher Otima
+	//let camp = JSON.parse(await fetch("http://test.outcondigital.com:8048/campaigns/available?publisher=5d5d66f2306ea4114a37c7c2")//Publisher Outcon test
+
 	.then(function(response) {
 		return response.text();
 	})

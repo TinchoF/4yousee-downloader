@@ -8,11 +8,8 @@
 		<div id='divShow'></div>
 	</body>
 	<script>
-		window.getProjectJSON = "designer"
-		let player;
-		let id;
+		window.getProjectJSON = "loadNews"
 		let content;
-		let filename;
 		let video;
 		function fetch(url){
 			return new Promise((resolve, reject) => {
@@ -22,50 +19,46 @@
 						reject(xmlhttp.status);
 						return;
 					}
-					if (xmlhttp.readyState == 4 ){
-						resolve(xmlhttp.responseText);
-					}
+					if (xmlhttp.readyState == 4 )resolve(xmlhttp.responseText);
 				}
 				xmlhttp.open("GET", url, true);
 				xmlhttp.send();
 			});
 		}
-
 		async function load(){
-			player = await fetch("http://localhost:48567/api/player/status");
-			id;
+			let id;
+			let player = await fetch("http://localhost:48567/api/player/status");
 			if (player) id = JSON.parse(player).player.id;
 			else id = 0;
-			content = JSON.parse(await fetch("http://test.outcondigital.com:8048/ad/get?player="+id+"&publisher=5d5d66f2306ea4114a37c7c2&demo=true"));//Publisher Outcon test
+			content = JSON.parse(await fetch("http://test.outcondigital.com:8048/ad/get?player="+id+"&publisher=5d794f57306ea430587143d2&local=true"));//Publisher Otima
+			//content = JSON.parse(await fetch("http://test.outcondigital.com:8048/ad/get?player="+id+"&publisher=5d5d66f2306ea4114a37c7c2&local=true"));//Publisher Outcon test
 			let f = decodeURIComponent(content.creatives[0].url).split('/');
-			filename = f[f.length-1];
+			let filename = f[f.length-1];
 			if (content.status == 'error' || id == 0) {
-				document.getElementById("divShow").innerHTML = '<img style="margin: 0; padding: 0; width: 100%; height: 100%; margin: 0px; padding: 0px"; src="../outcon/downloads/default.jpeg">';
+				document.getElementById("divShow").innerHTML = '<img onload="Android.ready(init)" style="width: 100%"; src="../outcon/downloads/default.jpeg">';
 			}
 			else {
 				if (content.type == "video"){
-					document.getElementById("divShow").innerHTML = '<video muted autoplay id="video"; style="margin: 0; padding: 0; width: 100%; height: 100%; margin: 0px; padding: 0px" ><source src="../outcon/downloads/'+filename+'"></video>';
+					document.getElementById("divShow").innerHTML = '<video muted autoplay id="video"; style="width: 100%" ><source src="../outcon/downloads/'+filename+'"></video>';
 					video = document.getElementById("video");
-					video.pause();
-					video.currentTime = 0;
+					video.addEventListener('loadstart', function() {
+						video.pause();
+						video.currentTime = 0;
+						Android.ready(init)
+					}, false);
 					}
 				if (content.type == "banner"){
-					document.getElementById("divShow").innerHTML = '<img style="margin: 0; padding: 0; width: 100%; height: 100%; margin: 0px; padding: 0px"; src="../outcon/downloads/'+filename+'">';
+					document.getElementById("divShow").innerHTML = '<img onload="Android.ready(init)" style="width: 100%"; src="../outcon/downloads/'+filename+'">';
 				}
 			}
-			fetch(content.trackingURL);
-			setTimeout(function(){ Android.ready(init)}, 5000);
 		}
-
 		function init(){
 			if (content.type == "video"){	
 				let video = document.getElementById("video");
 				video.play();
-				video.onended = function() {Android.finish()};
 				}
-			if (content.type == "banner"){
-				setTimeout(function(){ Android.finish();}, 10000);
-			}
+			setTimeout(function(){ Android.finish();}, 10000);
+			fetch(content.trackingURL);
 		}
 		load();
 	</script>
