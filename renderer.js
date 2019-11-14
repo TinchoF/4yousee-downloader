@@ -43,8 +43,8 @@ async function clean(adsFiles){
 
 async function downloadContent(){
 	let adsFiles = []
-	//let camp = JSON.parse(await fetch("http://test.outcondigital.com:8048/campaigns/available?publisher=5d794f57306ea430587143d2")//Publisher Otima
-	let camp = JSON.parse(await fetch("http://test.outcondigital.com:8048/campaigns/available?publisher=5d5d66f2306ea4114a37c7c2")//Publisher Outcon test
+	let camp = JSON.parse(await fetch("http://test.outcondigital.com:8048/campaigns/available?publisher=5d794f57306ea430587143d2")//Publisher Otima
+	//let camp = JSON.parse(await fetch("http://test.outcondigital.com:8048/campaigns/available?publisher=5d5d66f2306ea4114a37c7c2")//Publisher Outcon test
 
 	.then(function(response) {
 		return response.text();
