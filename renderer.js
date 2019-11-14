@@ -2,8 +2,8 @@ const remote = require('electron').remote;
 const app = remote.app;
 const appPath = app.getAppPath();
 const fs = require('fs');
-let path = appPath.replace("resources\\app.asar", '') //Windows
-//let path = appPath.replace("resources/app", '') //linux
+let path = appPath.replace("resources\\app.asar", '/downloads/') //Windows
+//let path = appPath.replace("\/resources\/app", '/downloads/'); //linux
 console.log(path)
 let download = require('download-file');
 
@@ -11,7 +11,7 @@ async function downloadAd(ad){
 	console.log(ad)
 	let f = decodeURIComponent(ad.creatives[0].url).split('/')
 	let ops = {
-		directory: path+"/downloads/",
+		directory: path,
 		filename: f[f.length-1]
 	}
 	const createFile = function(){
@@ -26,7 +26,7 @@ async function downloadAd(ad){
 async function clean(adsFiles){
 	const read = function(){
 		return new Promise((resolve,reject)=>{
-			fs.readdir(path+"/downloads/", function (err, files) {
+			fs.readdir(path, function (err, files) {
 				if (err) {reject (err)} 
 				resolve (files)
 			});
@@ -35,16 +35,16 @@ async function clean(adsFiles){
 	let files = await read()
 	for (let i=0; i<files.length; i++){
 		if (!adsFiles.includes(files[i])){ //si el archivo no está en las ads
-			fs.unlink(path+"/downloads/"+files[i],function(error){if (error) console.log(error);}); //borra archivo
-			console.log(path+"/downloads/"+files[i]+' deleted');
+			console.log(path+files[i]+' deleted');
+			fs.unlink(path+files[i],function(error){if (error) console.log(error);}); //borra archivo
 		}
 	}
 }
 
 async function downloadContent(){
 	let adsFiles = []
-	let camp = JSON.parse(await fetch("http://test.outcondigital.com:8048/campaigns/available?publisher=5d794f57306ea430587143d2")//Publisher Otima
-	//let camp = JSON.parse(await fetch("http://test.outcondigital.com:8048/campaigns/available?publisher=5d5d66f2306ea4114a37c7c2")//Publisher Outcon test
+	//let camp = JSON.parse(await fetch("http://test.outcondigital.com:8048/campaigns/available?publisher=5d794f57306ea430587143d2")//Publisher Otima
+	let camp = JSON.parse(await fetch("http://test.outcondigital.com:8048/campaigns/available?publisher=5d5d66f2306ea4114a37c7c2")//Publisher Outcon test
 
 	.then(function(response) {
 		return response.text();

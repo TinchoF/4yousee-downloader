@@ -6,7 +6,7 @@ const path = require('path');
 //let appIcon = null;
 var autoLauncher = new AutoLaunch({
     name: 'Outcon',
-    isHidden: true
+    isHidden: false
 });
 autoLauncher.enable();
 autoLauncher.isEnabled()
@@ -25,7 +25,7 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     icon: path.join(__dirname, 'icons/png/64x64.png'),
     width: 200,
-    height: 100,
+    height: 200,
     resizable: true,
     webPreferences: {
       nodeIntegration: true
@@ -36,7 +36,6 @@ function createWindow () {
       event.preventDefault();
       mainWindow.hide();
   });
-  mainWindow.removeMenu()
   mainWindow.on('close', function (event) {
       if(!app.isQuiting){
           event.preventDefault();
