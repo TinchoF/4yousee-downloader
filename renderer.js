@@ -68,4 +68,4 @@ async function downloadContent(){
 downloadContent()
 setInterval(function(){
 	downloadContent()
-}, 3600000 );
+}, 600000);
